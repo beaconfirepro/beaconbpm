@@ -12,9 +12,13 @@ const MermaidEditor = () => {
 
   const handleRender = () => {
     if (diagramRef.current) {
-      mermaid.render('mermaidDiagram', code, (svgCode) => {
-        diagramRef.current.innerHTML = svgCode;
-      });
+      mermaid.render('mermaidDiagram', code)
+        .then(({svg}) => {
+          diagramRef.current.innerHTML = svg;
+        })
+        .catch((error) => {
+          diagramRef.current.innerHTML = `<pre style="color:red;">${error}</pre>`;
+        });
     }
   };
 
@@ -25,7 +29,7 @@ const MermaidEditor = () => {
         value={code}
         onChange={(e) => setCode(e.target.value)}
         rows={10}
-        style={{ width: '100%', fontSize: '14px', fontFamily: 'monospace' }}
+        style={{ width: '70%', fontSize: '14px', fontFamily: 'monospace' }}
       />
       <button onClick={handleRender} style={{ marginTop: '10px', padding: '8px 15px' }}>
         Render Diagram
