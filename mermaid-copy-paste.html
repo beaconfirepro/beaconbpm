@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Mermaid Embed Test</title>
+  <title>Mermaid Embed Test with Text</title>
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -13,31 +13,44 @@
     }
     .mermaid {
       font-size: 16px;
+      margin: 20px 0;
+    }
+    .intro, .outro {
+      font-size: 18px;
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
 
-<div class="mermaid">
-graph LR
-  A[Beacon Starts Project] --> B{Is Client Ready?}
-  B -->|Yes| C[Kickoff Meeting]
-  B -->|No| D[Follow-up Scheduled]
-  C --> E[Project in Progress]
-  E --> F[Project Completed 🎉]
-</div>
+  <div class="intro">
+    This is an example of a Mermaid diagram embedded with explanatory text above and below.
+  </div>
 
-<script>
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: 'base',
-    themeVariables: {
-      primaryColor: '#114f61',
-      textColor: '#1b204a',
-      fontFamily: 'Lato, sans-serif',
-    }
-  });
-</script>
+  <div class="mermaid">
+    graph LR
+      A[Beacon Starts Project] --> B{Is Client Ready?}
+      B -->|Yes| C[Kickoff Meeting]
+      B -->|No| D[Follow-up Scheduled]
+      C --> E[Project in Progress]
+      E --> F[Project Completed 🎉]
+  </div>
+
+  <div class="outro">
+    The diagram above outlines the key steps involved in a typical Beacon project flow.
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#114f61',
+        textColor: '#1b204a',
+        fontFamily: 'Lato, sans-serif',
+      }
+    });
+  </script>
 
 </body>
 </html>
