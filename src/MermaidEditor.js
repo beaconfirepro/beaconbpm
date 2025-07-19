@@ -24,34 +24,49 @@ const MermaidEditor = () => {
     }
   };
 
-  const downloadPng = () => {
-    const svgElement = diagramRef.current.querySelector('svg');
-    const svgData = new XMLSerializer().serializeToString(svgElement);
+ const downloadPng = () => {
+  const svgElement = diagramRef.current.querySelector('svg');
 
-    const svg64 = btoa(unescape(encodeURIComponent(svgData)));
-    const image64 = 'data:image/svg+xml;base64,' + svg64;
+  // Explicitly set dimensions for higher resolution
+  const scale = 3; // increase to make higher-res images
+  const width = svgElement.clientWidth * scale;
+  const height = svgElement.clientHeight * scale;
 
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const context = canvas.getContext('2d');
-      context.drawImage(img, 0, 0);
+  svgElement.setAttribute("width", width);
+  svgElement.setAttribute("height", height);
 
-      canvas.toBlob((blob) => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'mermaid-diagram.png';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }, 'image/png');
-    };
+  const svgData = new XMLSerializer().serializeToString(svgElement);
+  const svg64 = btoa(unescape(encodeURIComponent(svgData)));
+  const image64 = 'data:image/svg+xml;base64,' + svg64;
 
-    img.src = image64;
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#ffffff'; // explicitly set white background
+    context.fillRect(0, 0, width, height);
+    context.drawImage(img, 0, 0);
+
+    canvas.toBlob((blob) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'mermaid-diagram.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Reset SVG dimensions back to original
+      svgElement.removeAttribute("width");
+      svgElement.removeAttribute("height");
+    }, 'image/png');
   };
+
+  img.src = image64;
+};
+
 
   return (
     <div style={{ padding: '20px' }}>
