@@ -15,34 +15,38 @@ const MermaidEditor = () => {
     if (diagramRef.current) {
       mermaid.render('mermaidDiagram', code)
         .then(({ svg }) => {
-          // Ensure the SVG is wrapped safely in a div
-          diagramRef.current.innerHTML = `<div>${svg}</div>`;
+          diagramRef.current.innerHTML = svg;
           setSvgCode(svg);
         })
         .catch((error) => {
-          diagramRef.current.innerHTML = `<pre style="color:red;">${error}</pre>`;
+          diagramRef.current.innerHTML = `<pre style=\"color:red;\">${error}</pre>`;
         });
     }
   };
 
+  const downloadPng = () => {
+    const svgBlob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+    const svgUrl = URL.createObjectURL(svgBlob);
 
- const downloadSvg = () => {
-  // Explicitly replace problematic HTML tags like <br> with spaces or line breaks
-  const cleanSvg = svgCode
-    .replace(/<br>/g, ' ')          // remove problematic <br> tags
-    .replace(/&nbsp;/g, ' ')        // replace HTML spaces
-    .replace(/<p>/g, '<text>')      // replace paragraph tags with valid SVG text tags
-    .replace(/<\/p>/g, '</text>');  // close SVG text tags correctly
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const context = canvas.getContext('2d');
+      context.drawImage(img, 0, 0);
 
-  const blob = new Blob([cleanSvg], { type: 'image/svg+xml;charset=utf-8' });
-  const svgUrl = URL.createObjectURL(blob);
-  const downloadLink = document.createElement('a');
-  downloadLink.href = svgUrl;
-  downloadLink.download = 'mermaid-diagram.svg';
-  downloadLink.click();
-  URL.revokeObjectURL(svgUrl);
-};
+      URL.revokeObjectURL(svgUrl);
+      canvas.toBlob((blob) => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'mermaid-diagram.png';
+        a.click();
+      }, 'image/png');
+    };
 
+    img.src = svgUrl;
+  };
 
   return (
     <div style={{ padding: '20px' }}>
@@ -56,8 +60,8 @@ const MermaidEditor = () => {
       <button onClick={handleRender} style={{ marginTop: '10px', padding: '8px 15px' }}>
         Render Diagram
       </button>
-      <button onClick={downloadSvg} style={{ marginTop: '10px', marginLeft: '10px', padding: '8px 15px' }}>
-        Download SVG
+      <button onClick={downloadPng} style={{ marginTop: '10px', marginLeft: '10px', padding: '8px 15px' }}>
+        Download PNG
       </button>
       <div ref={diagramRef} style={{ marginTop: '20px' }} />
     </div>
