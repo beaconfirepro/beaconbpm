@@ -1,19 +1,12 @@
 import React from 'react';
-import MermaidDiagram from './MermaidDiagram';
+import MermaidEditor from './MermaidEditor';
 
-const App = () => {
-  const chart = `
-    graph LR
-      A[Deb's Mermaid App] --> B{Working yet?}
-      B -->|YES| C[All Good]
-      B -->|NO| D[Still Broken]
-  `;
-
+function App() {
   return (
     <div className="App">
-      <MermaidDiagram chart={chart} />
+      <MermaidEditor />
     </div>
   );
-};
+}
 
 export default App;

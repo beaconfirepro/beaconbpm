@@ -1,32 +1,12 @@
 import React, { useEffect } from 'react';
 import mermaid from 'mermaid';
+import mermaidConfig from './mermaidConfig';
 
 const MermaidDiagram = ({ chart }) => {
-useEffect(() => {
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: 'base',
-    themeVariables: {
-      fontFamily: "'Evolve Sans', sans-serif",
-      fontSize: '16px',
-      primaryColor: '#114B5F', // Metallic Seaweed:contentReference[oaicite:0]{index=0}
-      secondaryColor: '#028090',
-      tertiaryColor: '#E06F03',
-      textColor: '#1b204a',
-      lineColor: '#6B8F9C',
-      nodeBorder: '#114B5F',
-      clusterBkg: '#F1EEEC',
-      edgeLabelBackground: '#ffffff',
-      nodeTextColor: '#191D4D',
-      nodeBorderRadius: '8px',
-    },
-    flowchart: {
-      curve: 'basis',
-      htmlLabels: true,
-    },
-  });
-  mermaid.contentLoaded();
-}, [chart]);
+  useEffect(() => {
+    mermaid.initialize(mermaidConfig);
+    mermaid.contentLoaded();
+  }, [chart]);
 
   return <div className="mermaid">{chart}</div>;
 };
