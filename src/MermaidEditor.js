@@ -19,24 +19,26 @@ const MermaidEditor = () => {
           setSvgCode(svg);
         })
         .catch((error) => {
-          diagramRef.current.innerHTML = `<pre style="color:red;">${error}</pre>`;
+          diagramRef.current.innerHTML = `<pre style=\"color:red;\">${error}</pre>`;
         });
     }
   };
 
   const downloadPng = () => {
-    const svgData = new XMLSerializer().serializeToString(diagramRef.current.firstChild);
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const svgUrl = URL.createObjectURL(svgBlob);
-    
+    const svgElement = diagramRef.current.querySelector('svg');
+    const svgData = new XMLSerializer().serializeToString(svgElement);
+
+    const svg64 = btoa(unescape(encodeURIComponent(svgData)));
+    const image64 = 'data:image/svg+xml;base64,' + svg64;
+
     const img = new Image();
+    img.crossOrigin = 'anonymous';
     img.onload = () => {
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
       const context = canvas.getContext('2d');
       context.drawImage(img, 0, 0);
-      URL.revokeObjectURL(svgUrl);
 
       canvas.toBlob((blob) => {
         const a = document.createElement('a');
@@ -48,7 +50,7 @@ const MermaidEditor = () => {
       }, 'image/png');
     };
 
-    img.src = svgUrl;
+    img.src = image64;
   };
 
   return (
