@@ -26,15 +26,23 @@ const MermaidEditor = () => {
   };
 
 
-  const downloadSvg = () => {
-    const blob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
-    const svgUrl = URL.createObjectURL(blob);
-    const downloadLink = document.createElement('a');
-    downloadLink.href = svgUrl;
-    downloadLink.download = 'mermaid-diagram.svg';
-    downloadLink.click();
-    URL.revokeObjectURL(svgUrl);
-  };
+ const downloadSvg = () => {
+  // Explicitly replace problematic HTML tags like <br> with spaces or line breaks
+  const cleanSvg = svgCode
+    .replace(/<br>/g, ' ')          // remove problematic <br> tags
+    .replace(/&nbsp;/g, ' ')        // replace HTML spaces
+    .replace(/<p>/g, '<text>')      // replace paragraph tags with valid SVG text tags
+    .replace(/<\/p>/g, '</text>');  // close SVG text tags correctly
+
+  const blob = new Blob([cleanSvg], { type: 'image/svg+xml;charset=utf-8' });
+  const svgUrl = URL.createObjectURL(blob);
+  const downloadLink = document.createElement('a');
+  downloadLink.href = svgUrl;
+  downloadLink.download = 'mermaid-diagram.svg';
+  downloadLink.click();
+  URL.revokeObjectURL(svgUrl);
+};
+
 
   return (
     <div style={{ padding: '20px' }}>
