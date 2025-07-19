@@ -1,3 +1,4 @@
+import React from 'react';
 import MermaidDiagram from './MermaidDiagram';
 
 const App = () => {
@@ -16,15 +17,3 @@ const App = () => {
 };
 
 export default App;
-bash: import: command not found
-bash: import: command not found
-bash: syntax error near unexpected token `('
-bash: graph: command not found
-bash: command substitution: line 3: unexpected EOF while looking for matching `''
-bash: const: command not found
-bash: syntax error near unexpected token `newline'
-bash: syntax error near unexpected token `newline'
-bash: syntax error near unexpected token `newline'
-bash: syntax error near unexpected token `newline'
-bash: syntax error near unexpected token `)'
-bash: syntax error near unexpected token `}'
