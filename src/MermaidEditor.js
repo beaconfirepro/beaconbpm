@@ -53,7 +53,7 @@ const MermaidEditor = () => {
           <tr>
             <td
               style={{
-                width: '640px',
+                width: '840px',
                 padding: '10px',
                 border: '1px solid #114B5F',
                 verticalAlign: 'top',
