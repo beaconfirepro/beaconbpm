@@ -7,18 +7,28 @@ export const downloadMermaidImage = (svgElement, mermaidConfig, filename = 'merm
   svgElement.setAttribute('width', width);
   svgElement.setAttribute('height', height);
 
+  // Explicitly embed fonts directly into SVG as CSS
   const style = document.createElement('style');
   style.textContent = `
     @font-face {
-      font-family: ${mermaidConfig.themeVariables.fontFamily};
-      src: url(${window.location.origin}/fonts/evolve-bold.woff2) format('woff2');
+      font-family: 'Evolve Sans';
+      src: url('${window.location.origin}/fonts/evolve-bold.woff2') format('woff2');
       font-weight: bold;
-      font-style: normal;
     }
-    text {
-      font-family: ${mermaidConfig.themeVariables.fontFamily};
-      font-weight: ${mermaidConfig.themeVariables.fontWeight || 'bold'};
-      fill: ${mermaidConfig.themeVariables.textColor || '#ffffff'};
+    @font-face {
+      font-family: 'Evolve Sans';
+      src: url('${window.location.origin}/fonts/evolve-regular.woff2') format('woff2');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Brittany';
+      src: url('${window.location.origin}/fonts/brittany.woff2') format('woff2');
+      font-weight: normal;
+    }
+    * {
+      font-family: ${mermaidConfig.themeVariables.fontFamily}, sans-serif !important;
+      font-weight: ${mermaidConfig.themeVariables.fontWeight || 'bold'} !important;
+      fill: ${mermaidConfig.themeVariables.textColor || '#ffffff'} !important;
     }
   `;
 
