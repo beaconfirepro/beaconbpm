@@ -15,7 +15,8 @@ const MermaidEditor = () => {
     if (diagramRef.current) {
       mermaid.render('mermaidDiagram', code)
         .then(({ svg }) => {
-          diagramRef.current.innerHTML = svg;
+          // Ensure the SVG is wrapped safely in a div
+          diagramRef.current.innerHTML = `<div>${svg}</div>`;
           setSvgCode(svg);
         })
         .catch((error) => {
@@ -23,6 +24,7 @@ const MermaidEditor = () => {
         });
     }
   };
+
 
   const downloadSvg = () => {
     const blob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
