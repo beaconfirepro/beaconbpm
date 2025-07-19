@@ -1,32 +1,20 @@
 @font-face {
   font-family: 'Evolve Sans';
-  src: url('/fonts/evolve-bold.woff2') format('woff2');
+  src: url('../public/fonts/evolve-bold.woff2') format('woff2');
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Evolve Sans';
-  src: url('/fonts/evolve.regular.woff2') format('woff2');
+  src: url('../public/fonts/evolve-regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Brittany';
-  src: url('/fonts/brittany.woff2') format('woff2');
+  src: url('../public/fonts/brittany.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
-}
-
-body {
-  font-family: 'Evolve Sans', sans-serif;
-  color: #114B5F;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-textarea, button {
-  font-family: inherit;
 }
