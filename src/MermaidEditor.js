@@ -47,7 +47,23 @@ const MermaidEditor = () => {
       <button onClick={handleDownloadPng} style={{ marginTop: '10px', marginLeft: '10px', padding: '8px 15px' }}>
         Download PNG
       </button>
-      <div ref={diagramRef} style={{ marginTop: '20px' }} />
+
+      <table style={{ border: '2px solid #114B5F', marginTop: '20px', borderCollapse: 'collapse' }}>
+        <tbody>
+          <tr>
+            <td
+              style={{
+                width: '640px',
+                padding: '10px',
+                border: '1px solid #114B5F',
+                verticalAlign: 'top',
+              }}
+            >
+              <div ref={diagramRef} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
