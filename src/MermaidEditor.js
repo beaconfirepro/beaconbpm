@@ -24,29 +24,14 @@ const MermaidEditor = () => {
     }
   };
 
-  const downloadImage = () => {
-    const svgBlob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
-    const svgUrl = URL.createObjectURL(svgBlob);
-    const img = new Image();
-
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      const context = canvas.getContext('2d');
-      context.drawImage(img, 0, 0);
-
-      URL.revokeObjectURL(svgUrl);
-      canvas.toBlob((blob) => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'mermaid-diagram.png';
-        a.click();
-      });
-    };
-
-    img.src = svgUrl;
+  const downloadSvg = () => {
+    const blob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+    const svgUrl = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = svgUrl;
+    downloadLink.download = 'mermaid-diagram.svg';
+    downloadLink.click();
+    URL.revokeObjectURL(svgUrl);
   };
 
   return (
@@ -61,8 +46,8 @@ const MermaidEditor = () => {
       <button onClick={handleRender} style={{ marginTop: '10px', padding: '8px 15px' }}>
         Render Diagram
       </button>
-      <button onClick={downloadImage} style={{ marginTop: '10px', marginLeft: '10px', padding: '8px 15px' }}>
-        Download as Image
+      <button onClick={downloadSvg} style={{ marginTop: '10px', marginLeft: '10px', padding: '8px 15px' }}>
+        Download SVG
       </button>
       <div ref={diagramRef} style={{ marginTop: '20px' }} />
     </div>
