@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import mermaid from 'mermaid';
 import mermaidConfig from './mermaidConfig';
+import { downloadMermaidImage } from './downloadMermaidImage';
 
 const MermaidEditor = () => {
   const [code, setCode] = useState('');
@@ -19,54 +20,17 @@ const MermaidEditor = () => {
           setSvgCode(svg);
         })
         .catch((error) => {
-          diagramRef.current.innerHTML = `<pre style=\"color:red;\">${error}</pre>`;
+          diagramRef.current.innerHTML = `<pre style="color:red;">${error}</pre>`;
         });
     }
   };
 
- const downloadPng = () => {
-  const svgElement = diagramRef.current.querySelector('svg');
-
-  // Explicitly set dimensions for higher resolution
-  const scale = 3; // increase to make higher-res images
-  const width = svgElement.clientWidth * scale;
-  const height = svgElement.clientHeight * scale;
-
-  svgElement.setAttribute("width", width);
-  svgElement.setAttribute("height", height);
-
-  const svgData = new XMLSerializer().serializeToString(svgElement);
-  const svg64 = btoa(unescape(encodeURIComponent(svgData)));
-  const image64 = 'data:image/svg+xml;base64,' + svg64;
-
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const context = canvas.getContext('2d');
-    context.fillStyle = '#ffffff'; // explicitly set white background
-    context.fillRect(0, 0, width, height);
-    context.drawImage(img, 0, 0);
-
-    canvas.toBlob((blob) => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'mermaid-diagram.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      // Reset SVG dimensions back to original
-      svgElement.removeAttribute("width");
-      svgElement.removeAttribute("height");
-    }, 'image/png');
+  const handleDownloadPng = () => {
+    const svgElement = diagramRef.current.querySelector('svg');
+    if (svgElement) {
+      downloadMermaidImage(svgElement, mermaidConfig);
+    }
   };
-
-  img.src = image64;
-};
-
 
   return (
     <div style={{ padding: '20px' }}>
@@ -80,7 +44,7 @@ const MermaidEditor = () => {
       <button onClick={handleRender} style={{ marginTop: '10px', padding: '8px 15px' }}>
         Render Diagram
       </button>
-      <button onClick={downloadPng} style={{ marginTop: '10px', marginLeft: '10px', padding: '8px 15px' }}>
+      <button onClick={handleDownloadPng} style={{ marginTop: '10px', marginLeft: '10px', padding: '8px 15px' }}>
         Download PNG
       </button>
       <div ref={diagramRef} style={{ marginTop: '20px' }} />
