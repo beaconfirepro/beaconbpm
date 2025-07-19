@@ -24,26 +24,33 @@ const MermaidEditor = () => {
     }
   };
 
-  const downloadPng = () => {
-    const svgBlob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
-    const svgUrl = URL.createObjectURL(svgBlob);
+const downloadPng = () => {
+  const svgData = new XMLSerializer().serializeToString(diagramRef.current.firstChild);
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+  const svgUrl = URL.createObjectURL(svgBlob);
+  
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const context = canvas.getContext('2d');
+    context.drawImage(img, 0, 0);
+    URL.revokeObjectURL(svgUrl);
 
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const context = canvas.getContext('2d');
-      context.drawImage(img, 0, 0);
+    canvas.toBlob((blob) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'mermaid-diagram.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }, 'image/png');
+  };
 
-      URL.revokeObjectURL(svgUrl);
-      canvas.toBlob((blob) => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'mermaid-diagram.png';
-        a.click();
-      }, 'image/png');
-    };
+  img.src = svgUrl;
+};
+
 
     img.src = svgUrl;
   };
