@@ -1,10 +1,10 @@
 import React from 'react';
-import MermaidEditor from './MermaidEditor';
+import CashflowUploader from './CashflowUploader';
 
 function App() {
   return (
     <div className="App">
-      <MermaidEditor />
+      <CashflowUploader />
     </div>
   );
 }
